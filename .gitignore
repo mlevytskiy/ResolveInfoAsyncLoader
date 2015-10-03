@@ -6,6 +6,9 @@
 /.idea/workspace.xml
 /.idea/libraries
 /gradle.properties
+/ResolveInfoAsyncLoaderLib/build
+/sample/build
+/gradle
 *.iml
 .DS_Store
 /build
