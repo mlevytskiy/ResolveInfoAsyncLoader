@@ -1,0 +1,24 @@
+package appicon.funakoshi.com.apploadiconasync;
+
+import android.content.*;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    public void onClickShowAppsOldWay(View view) {
+        startActivity(new Intent(this, AppsActivityWithLags.class));
+    }
+
+    public void onClickShowAppsNewWay(View view) {
+        startActivity(new Intent(this, AppsActivity.class));
+    }
+
+}
