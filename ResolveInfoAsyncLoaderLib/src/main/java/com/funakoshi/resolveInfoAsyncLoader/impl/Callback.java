@@ -1,7 +1,6 @@
 package com.funakoshi.resolveInfoAsyncLoader.impl;
 
 import android.net.Uri;
-import android.support.annotation.UiThread;
 
 /**
  * Created by max on 30.09.15.
@@ -18,7 +17,6 @@ public abstract class Callback {
         }
     }
 
-    @UiThread
     protected abstract void onSave(Uri uri);
 
     public final void cancel() {

@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,6 +21,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class SaveResolveInfoTask implements Runnable {
 
+    private static final int ICON_SIZE_LDPI = 36;
+    private static final int ICON_SIZE_MDPI = 48;
+    private static final int ICON_SIZE_TVDPI = 64;
+    private static final int ICON_SIZE_HDPI = 72;
+    private static final int ICON_SIZE_XHDPI = 96;
+    private static final int ICON_SIZE_XXHDPI = 144;
+
     private ResolveInfo resolveInfo;
     private Callback callback;
     private File file;
@@ -27,14 +35,16 @@ public class SaveResolveInfoTask implements Runnable {
     private Handler handler = new Handler(Looper.getMainLooper());
     private Stack<SaveResolveInfoTask> reusedOldTaskStack;
     private volatile AtomicBoolean isCanceled = new AtomicBoolean(false);
+    private int iconHeight;
 
     public SaveResolveInfoTask(PackageManager pm, ResolveInfo resolveInfo, Callback callback,
-            File file, Stack<SaveResolveInfoTask> reusedOldTaskStack) {
+            File file, Stack<SaveResolveInfoTask> reusedOldTaskStack, int density) {
         packageManager = pm;
         this.resolveInfo = resolveInfo;
         this.callback = callback;
         this.file = file;
         this.reusedOldTaskStack = reusedOldTaskStack;
+        this.iconHeight = calculateIconHeight(density);
     }
 
     public ResolveInfo getResolveInfo() {
@@ -128,15 +138,31 @@ public class SaveResolveInfoTask implements Runnable {
 
     }
 
+    private int calculateIconHeight(int density) {
+        if (density == DisplayMetrics.DENSITY_LOW) {
+            return ICON_SIZE_LDPI;
+        } else if (density == DisplayMetrics.DENSITY_MEDIUM) {
+            return ICON_SIZE_MDPI;
+        } else if (density == DisplayMetrics.DENSITY_TV) {
+            return ICON_SIZE_TVDPI;
+        } else if (density == DisplayMetrics.DENSITY_HIGH) {
+            return ICON_SIZE_HDPI;
+        } else if (density == DisplayMetrics.DENSITY_XHIGH) {
+            return ICON_SIZE_XHDPI;
+        } else {
+            return ICON_SIZE_XXHDPI;
+        }
+    }
+
     private Bitmap drawableToBitmap (Drawable drawable) {
         Bitmap bitmap = null;
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             if(bitmapDrawable.getBitmap() != null) {
-                if (bitmapDrawable.getIntrinsicHeight() > 96 ||
-                        bitmapDrawable.getIntrinsicWidth() > 96) {
-                    return Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), 96, 96, false);
+                if (bitmapDrawable.getIntrinsicHeight() > iconHeight ||
+                        bitmapDrawable.getIntrinsicWidth() > iconHeight) {
+                    return Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), iconHeight, iconHeight, false);
                 }
                 return bitmapDrawable.getBitmap();
             }

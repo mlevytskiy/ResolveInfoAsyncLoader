@@ -26,19 +26,29 @@ public class IconImageView extends ImageView {
 
     private static WeakReference<Drawable> defaultDrawable;
     private static Stack<SaveResolveInfoTask> reusedOldTaskStack = new Stack<>();
+    private static int density = -1;
 
     private SaveResolveInfoTask task;
 
     public IconImageView(Context context) {
         super(context);
+        initDensity();
     }
 
     public IconImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initDensity();
     }
 
     public IconImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initDensity();
+    }
+
+    private void initDensity() {
+        if (density == -1) {
+            density = getResources().getDisplayMetrics().densityDpi;
+        }
     }
 
     public void setResolveInfo(ResolveInfo resolveInfo) {
@@ -74,7 +84,7 @@ public class IconImageView extends ImageView {
                         }, 200);
                     }
                 }
-                    }, file);
+                    }, file, density);
             ExecutorHolder.STACK_EXECUTOR.execute(task);
         }
     }
@@ -87,10 +97,12 @@ public class IconImageView extends ImageView {
         return handler;
     }
 
-    private SaveResolveInfoTask getTask(ResolveInfo resolveInfo, PackageManager pm, Callback callback, File file) {
+    private SaveResolveInfoTask getTask(ResolveInfo resolveInfo, PackageManager pm,
+                                        Callback callback, File file, int density) {
         SaveResolveInfoTask task;
         if (reusedOldTaskStack.isEmpty()) {
-            task = new SaveResolveInfoTask(pm, resolveInfo, callback, file, reusedOldTaskStack);
+            task = new SaveResolveInfoTask(pm, resolveInfo, callback, file, reusedOldTaskStack,
+                    density);
         } else {
             task = reusedOldTaskStack.pop();
             task.setResolveInfo(resolveInfo);
