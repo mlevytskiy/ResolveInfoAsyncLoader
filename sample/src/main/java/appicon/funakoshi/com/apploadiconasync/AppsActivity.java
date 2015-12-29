@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
 import java.util.List;
 
 /**
@@ -36,7 +38,11 @@ public class AppsActivity extends AppCompatActivity {
             protected void onPostExecute(List<ResolveInfo> resolveInfos) {
                 super.onPostExecute(resolveInfos);
                 AppsAdapter appsAdapter = new AppsAdapter(resolveInfos, AppsActivity.this);
-                gridView.setAdapter(appsAdapter);
+
+                SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(appsAdapter);
+                swingBottomInAnimationAdapter.setAbsListView(gridView);
+
+                gridView.setAdapter(swingBottomInAnimationAdapter);
             }
         }.execute();
     }
