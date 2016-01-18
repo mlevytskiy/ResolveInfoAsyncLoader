@@ -37,7 +37,20 @@ public class LabelTextView extends TextView {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setPackageName(String packageName) {
+        Intent intent = new Intent();
+        intent.setPackage(packageName);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = getContext().getPackageManager();
+        ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
+        setResolveInfo(resolveInfo, pm);
+    }
+
     public void setResolveInfo(ResolveInfo resolveInfo) {
+        setResolveInfo(resolveInfo, getContext().getPackageManager());
+    }
+
+    private void setResolveInfo(ResolveInfo resolveInfo, PackageManager pm) {
         if (map.isEmpty()) {
             SharedPreferences keyValues = getContext().getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
             Map<String, ?> map1 = keyValues.getAll();
@@ -47,7 +60,6 @@ public class LabelTextView extends TextView {
         }
         mapIsSaved = !map.isEmpty();
         cancelCurrentTask();
-        PackageManager pm = getContext().getPackageManager();
         String value = map.get(resolveInfo.activityInfo.name);
         if (TextUtils.isEmpty(value)) {
             setText(LOADING);

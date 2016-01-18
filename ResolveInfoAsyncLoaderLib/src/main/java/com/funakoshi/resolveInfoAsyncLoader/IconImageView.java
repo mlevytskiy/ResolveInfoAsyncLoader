@@ -52,6 +52,10 @@ public class IconImageView extends ImageView {
     }
 
     public void setResolveInfo(ResolveInfo resolveInfo) {
+        setResolveInfo(resolveInfo, getContext().getPackageManager());
+    }
+
+    private void setResolveInfo(ResolveInfo resolveInfo, PackageManager pm) {
         cancelCurrentTask();
         FileGenerator fileGenerator = new FileGenerator(getContext());
         final File file = fileGenerator.generate(resolveInfo);
@@ -69,24 +73,33 @@ public class IconImageView extends ImageView {
         } else {
             Drawable defaultLoading = getDefaultDrawable();
             this.setImageDrawable(defaultLoading);
-            task = getTask(resolveInfo, getContext().getPackageManager(),
-            new Callback() {
-                @Override
-                public void onSave(final Uri uri) {
-                    if (file.exists() || file.canRead()) {
-                        setImageURI(uri);
-                    } else {
-                        getHandler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
+            task = getTask(resolveInfo, pm,
+                    new Callback() {
+                        @Override
+                        public void onSave(final Uri uri) {
+                            if (file.exists() || file.canRead()) {
                                 setImageURI(uri);
+                            } else {
+                                getHandler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setImageURI(uri);
+                                    }
+                                }, 200);
                             }
-                        }, 200);
-                    }
-                }
+                        }
                     }, file, density);
             ExecutorHolder.STACK_EXECUTOR.execute(task);
         }
+    }
+
+    public void setPackageName(String packageName) {
+        Intent intent = new Intent();
+        intent.setPackage(packageName);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = getContext().getPackageManager();
+        ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
+        setResolveInfo(resolveInfo, pm);
     }
 
     public Handler getHandler() {
