@@ -5,6 +5,8 @@ Help to show [ResolveInfo](http://developer.android.com/intl/es/reference/androi
 
 ##Including in your project
 
+Gradle
+
 ````groovy
 compile 'com.funakoshi.resolveInfoAsyncLoader:ResolveInfoAsyncLoaderLib:1.0.1'
 ````
