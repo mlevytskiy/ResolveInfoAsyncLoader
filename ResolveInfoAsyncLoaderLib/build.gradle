@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
-version = "1.0.0"
+version = "1.0.1"
 group = "com.funakoshi.resolveInfoAsyncLoader"
 
 def siteUrl = 'https://github.com/mlevytskiy/ResolveInfoAsyncLoader'
@@ -15,8 +15,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 2
+        versionName version
     }
     buildTypes {
         release {
@@ -27,8 +27,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.0'
+
 }
 
 Properties properties = new Properties()
@@ -44,7 +43,7 @@ bintray {
         name = "ResolveInfoAsyncLoader"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
+        licenses = ["MIT"]
         publish = true
     }
 }
