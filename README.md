@@ -5,13 +5,16 @@ Help to show ResolveInfo label and icon asynchronously. (less blocking UI thread
 
 ##Including in your project
 
+````groovy
 compile 'com.funakoshi.resolveInfoAsyncLoader:ResolveInfoAsyncLoaderLib:1.0.1'
+````
 
 ##How use
 
 Use LabelTextView instead of TextView for show app name.
 Use IconImageView instead of ImageView for show app icon.
 
+````
 <com.funakoshi.resolveInfoAsyncLoader.IconImageView
         android:id="@+id/image_view"
         android:layout_width="50dp"
@@ -21,14 +24,19 @@ Use IconImageView instead of ImageView for show app icon.
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+ ````
         
+````java
 label.setResolveInfo(resolveInfo);
 icon.setResolveInfo(resolveInfo);
+ ````
 
 or
 
+````java
 label.setPackageName(packageName);
 icon.setPackageName(packageName);
+ ````
 
 
 ##License
