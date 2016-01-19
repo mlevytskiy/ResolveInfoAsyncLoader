@@ -1,7 +1,7 @@
 ResolveInfoAsyncLoader
 ================
 
-Help to show ResolveInfo label and icon asynchronously. (less blocking UI thread).
+Help to show [ResolveInfo](http://developer.android.com/intl/es/reference/android/content/pm/ResolveInfo.html) label and icon asynchronously. (less blocking UI thread).
 
 ##Including in your project
 
