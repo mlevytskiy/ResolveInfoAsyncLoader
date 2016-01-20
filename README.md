@@ -1,6 +1,8 @@
 ResolveInfoAsyncLoader
 ================
 
+[![Join the chat at https://gitter.im/mlevytskiy/ResolveInfoAsyncLoader](https://badges.gitter.im/mlevytskiy/ResolveInfoAsyncLoader.svg)](https://gitter.im/mlevytskiy/ResolveInfoAsyncLoader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Help to show [ResolveInfo](http://developer.android.com/intl/es/reference/android/content/pm/ResolveInfo.html) label and icon asynchronously. (less blocking UI thread).
 
 ##Including in your project
